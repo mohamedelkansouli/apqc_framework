@@ -1,17 +1,43 @@
+import csv
 import sqlite3
-import pandas as pd
+import os
 
-# 1. Charger le fichier CSV dans un DataFrame pandas
-df = pd.read_csv('all_apqc.csv')
+CSV_FILE = "all_apqc.csv"
+DB_FILE = "all_apqc.db"
 
-# 2. Se connecter à la base de données SQLite (crée le fichier s'il n'existe pas)
-conn = sqlite3.connect('all_apqc.db')
+def load_db():
+    if os.path.exists(DB_FILE):
+        print(f"Database {DB_FILE} already exists. Skipping creation.")
+        return
 
-# 3. Écrire les données dans la table SQLite
-# if_exists='replace' remplace la table si elle existe déjà (vous pouvez mettre 'append' pour l'ajouter)
-df.to_sql('all_apqc', conn, if_exists='replace', index=False)
+    print(f"Creating database {DB_FILE} from {CSV_FILE}...")
+    con = sqlite3.connect(DB_FILE)
+    cur = con.cursor()
+    
+    cur.execute("""
+        CREATE TABLE all_apqc (
+            apqc_id TEXT,
+            hierarchy_id TEXT,
+            Name TEXT,
+            Description TEXT,
+            industry TEXT
+        )
+    """)
+    
+    with open(CSV_FILE, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        rows = [
+            (r["apqc_id"], r["hierarchy_id"], r["Name"], r.get("Description", ""), r["industry"])
+            for r in reader
+        ]
+        
+    cur.executemany(
+        "INSERT INTO all_apqc VALUES (?, ?, ?, ?, ?)",
+        rows
+    )
+    con.commit()
+    con.close()
+    print("Database created successfully!")
 
-# 4. Fermer la connexion
-conn.close()
-
-print("Importation réussie !")
+if __name__ == "__main__":
+    load_db()

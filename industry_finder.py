@@ -16,9 +16,9 @@ def detect_industry(user_prompt: str, model_name: str = "llama3.2:3b") -> str:
 
     Strict Rules:
     1. Analyze the user's prompt.
-    2. If the prompt is a general knowledge question, a greeting, or completely unrelated to business/industry (e.g., "What is the capital of France?"), reply STRICTLY with "OUT_OF_SCOPE".
-    3. Select ONLY the exact name of the industry from the list above that best matches their sector or context.
-    4. If the industry is unclear, or too general, reply STRICTLY with "CrossIndustry".
+    2. If the prompt is a completely unrelated general knowledge question, a greeting, or a recipe (e.g., "What is the capital of France?"), reply STRICTLY with "OUT_OF_SCOPE".
+    3. If the prompt is a business sector, a product (like "cars", "planes", "software"), or a service, you MUST map it to the closest industry in the list (e.g., "cars" -> "Automotive" or "Retail", "planes" -> "AerospaceAndDefense"). Do not mark short business words as out of scope.
+    4. If the industry is genuinely unclear, or too general (like "I have a company"), reply STRICTLY with "CrossIndustry".
     5. Do not add any explanation, extra text, or quotes: you must return ONLY the exact name or "OUT_OF_SCOPE".
     """
 
