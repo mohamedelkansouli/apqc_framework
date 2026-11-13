@@ -8,12 +8,9 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Base de données locale et fichiers de sortie
-*.db
-*.sqlite
-*.sqlite3
-output.json
-selected_industry.json
+# Fichiers de données (on garde la DB)
+*.csv
+*.json
 
 # Fichiers système
 .DS_Store
