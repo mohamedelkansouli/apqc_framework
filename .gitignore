@@ -1,0 +1,19 @@
+# Environnements virtuels
+venv/
+.venv/
+env/
+
+# Bytecode Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Base de données locale et fichiers de sortie
+*.db
+*.sqlite
+*.sqlite3
+output.json
+selected_industry.json
+
+# Fichiers système
+.DS_Store
